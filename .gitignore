@@ -7,6 +7,8 @@
 !merged.csv
 !transaction.csv
 !readme.md
+!setup_database.sql
+!schema.prisma
 
 # Even if they are in subdirectories
 !*/
@@ -17,6 +19,8 @@
 !*/merged.csv
 !*/transaction.csv
 !*/readme.md
+!*/setup_database.sql
+!*/schema.prisma
 
 # Ignore Python virtual environment
 venv/

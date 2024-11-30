@@ -1,0 +1,60 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Transaction {
+  id                         Int      @id @default(autoincrement())
+  userid                     String   @db.VarChar(6)
+  spendingAmount            Float    @map("spending_amount")
+  receipientCategory        String   @map("receipient_category")
+  necessitiesOrNonEssential Boolean  @map("necessities_or_non_essential")
+  timestamp                 DateTime
+
+  user                      FinancialMetrics[] @relation("UserTransactions")
+
+  @@index([userid])
+  @@index([timestamp])
+  @@map("transactions")
+}
+
+model FinancialMetrics {
+  id                            Int      @id @default(autoincrement())
+  userid                        String   @db.VarChar(6)
+  cancellationRate             Float    @map("cancellation_rate")
+  ratings                      Float
+  responsivenessToTask         Float    @map("responsiveness_to_task")
+  minMaxDiffPast6Months        Float    @map("min_max_diff_past_6_months")
+  ratingsInflux                Float    @map("ratings_influx")
+  typeOfGig                    String   @map("type_of_gig")
+  socialMediaActivenessScore   Float    @map("social_media_activeness_score")
+  permanentEmployment          String   @map("permanent_employment")
+  yearsOfEmployment           Int      @map("years_of_employment")
+  fluctuationRate             Float    @map("fluctuation_rate")
+  grossIncome                 Float    @map("gross_income")
+  netIncome                   Float    @map("net_income")
+  impulsivePurchaseRate       Float    @map("impulsive_purchase_rate")
+  recurringExpenseConsistency Float    @map("recurring_expense_consistency")
+  expenseToIncomeRatio        Float    @map("expense_to_income_ratio")
+  regularSaving               Boolean  @map("regular_saving")
+  regularSavingsAmount        Float    @map("regular_savings_amount")
+  emergencyFundAvailability   Boolean  @map("emergency_fund_availability")
+  emergencyFundAmount         Float    @map("emergency_fund_amount")
+  consistentSpending          Boolean  @map("consistent_spending")
+  spendingAmount             Float    @map("spending_amount")
+  portfolioDiversificationRisk Float    @map("portfolio_diversification_risk")
+  awarenessOfUtilisationOfPfm Int      @map("awareness_of_utilisation_of_pfm")
+  timestamp                   DateTime
+
+  transactions                Transaction[] @relation("UserTransactions")
+
+  @@index([userid])
+  @@index([timestamp])
+  @@map("financial_metrics")
+}

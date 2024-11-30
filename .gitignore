@@ -1,0 +1,24 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!generateDummyData.py
+!merged.csv
+!transaction.csv
+!readme.md
+
+# Even if they are in subdirectories
+!*/
+
+# Ignore all other files in any directory
+*/*
+!*/generateDummyData.py
+!*/merged.csv
+!*/transaction.csv
+!*/readme.md
+
+# Ignore Python virtual environment
+venv/
+__pycache__/
+*.pyc

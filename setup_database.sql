@@ -1,19 +1,25 @@
 -- Create tables for the financial data
 
+-- Drop existing tables if they exist (with CASCADE to handle dependencies)
+DROP TABLE IF EXISTS financial_metrics CASCADE;
+DROP TABLE IF EXISTS transactions CASCADE;
+
 -- Create transactions table
 CREATE TABLE IF NOT EXISTS transactions (
     transaction_id SERIAL PRIMARY KEY,
-    userid VARCHAR(6) NOT NULL,
+    ic VARCHAR(14) NOT NULL,
     spending_amount DECIMAL(10,2) NOT NULL,
     receipient_category VARCHAR(50) NOT NULL,
     necessities_or_non_essential BOOLEAN NOT NULL,
-    timestamp TIMESTAMP NOT NULL
+    timestamp TIMESTAMP NOT NULL,
+    full_name VARCHAR(100) NOT NULL
 );
 
 -- Create financial_metrics table
 CREATE TABLE IF NOT EXISTS financial_metrics (
     metric_id SERIAL PRIMARY KEY,
-    userid VARCHAR(6) NOT NULL,
+    ic VARCHAR(14) NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
     cancellation_rate DECIMAL(4,2),
     ratings DECIMAL(4,2),
     responsiveness_to_task DECIMAL(4,2),
@@ -41,17 +47,17 @@ CREATE TABLE IF NOT EXISTS financial_metrics (
 );
 
 -- Create indexes for better query performance
-CREATE INDEX idx_transactions_userid ON transactions(userid);
+CREATE INDEX idx_transactions_ic ON transactions(ic);
 CREATE INDEX idx_transactions_timestamp ON transactions(timestamp);
-CREATE INDEX idx_financial_metrics_userid ON financial_metrics(userid);
+CREATE INDEX idx_financial_metrics_ic ON financial_metrics(ic);
 CREATE INDEX idx_financial_metrics_timestamp ON financial_metrics(timestamp);
 
 -- Copy data from CSV files
-COPY transactions(userid, spending_amount, receipient_category, necessities_or_non_essential, timestamp) 
+COPY transactions(ic, spending_amount, receipient_category, necessities_or_non_essential, timestamp, full_name) 
 FROM '/Users/haoming/Documents/PayHack 2024/ninjakakiData/transaction.csv' 
 DELIMITER ',' CSV HEADER;
 
-COPY financial_metrics(userid, cancellation_rate, ratings, responsiveness_to_task, min_max_diff_past_6_months, 
+COPY financial_metrics(ic, full_name, cancellation_rate, ratings, responsiveness_to_task, min_max_diff_past_6_months, 
     ratings_influx, type_of_gig, social_media_activeness_score, permanent_employment, years_of_employment, 
     fluctuation_rate, gross_income, net_income, impulsive_purchase_rate, recurring_expense_consistency, 
     expense_to_income_ratio, regular_saving, regular_savings_amount, emergency_fund_availability, 

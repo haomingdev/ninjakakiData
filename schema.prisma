@@ -11,7 +11,8 @@ datasource db {
 
 model Transaction {
   id                         Int      @id @default(autoincrement())
-  userid                     String   @db.VarChar(6)
+  ic                        String   @db.VarChar(14)
+  fullName                  String   @map("full_name") @db.VarChar(100)
   spendingAmount            Float    @map("spending_amount")
   receipientCategory        String   @map("receipient_category")
   necessitiesOrNonEssential Boolean  @map("necessities_or_non_essential")
@@ -19,14 +20,15 @@ model Transaction {
 
   user                      FinancialMetrics[] @relation("UserTransactions")
 
-  @@index([userid])
+  @@index([ic])
   @@index([timestamp])
   @@map("transactions")
 }
 
 model FinancialMetrics {
   id                            Int      @id @default(autoincrement())
-  userid                        String   @db.VarChar(6)
+  ic                           String   @db.VarChar(14)
+  fullName                     String   @map("full_name") @db.VarChar(100)
   cancellationRate             Float    @map("cancellation_rate")
   ratings                      Float
   responsivenessToTask         Float    @map("responsiveness_to_task")
@@ -54,7 +56,7 @@ model FinancialMetrics {
 
   transactions                Transaction[] @relation("UserTransactions")
 
-  @@index([userid])
+  @@index([ic])
   @@index([timestamp])
   @@map("financial_metrics")
 }
